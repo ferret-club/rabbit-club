@@ -7,19 +7,25 @@ public class PickUpItem : MonoBehaviour {
 	// InspectorでアイテムL画像を設定して下さい
 	public Sprite[] itemImages;
 	private Image me;
+	private Image itemImg;
 
 	void Start() {
-		me = this.transform.FindChild("ItemImg").GetComponent<Image>();
+		me = this.GetComponent<Image>();
+		itemImg = this.transform.FindChild("ItemImg").GetComponent<Image>();
 	}
 	
-	void Update() {
-	
-	}
-
 	// _idに表示したいアイテムL画像のIDを私て下さい
 	public void OnPickUp(int _id) {
-		this.GetComponent<Image>().enabled = true;
 		me.enabled = true;
-		this.transform.FindChild("ItemImg").GetComponent<Image>().sprite = itemImages[_id];
+		itemImg.enabled = true;
+		itemImg.sprite = itemImages[_id];
 	}
+
+	// クリックされたら自分自身を非表示にする
+	public void OnClick() {
+		itemImg.sprite = null;
+		itemImg.enabled = false;
+		me.enabled = false;
+	}
+
 }
