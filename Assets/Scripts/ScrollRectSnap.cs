@@ -241,7 +241,7 @@ public class ScrollRectSnap : MonoBehaviour
 					additional = 320;
 					break;
 				}
-				player.transform.position = new Vector2 (CharacterPositionArray [2] + additional, 64);
+				player.transform.position = new Vector2 (CharacterPositionArray [2] + additional, 90);
 				playerObjects [msgCid] = player;
 
 				if (connections.Count == 2) {
@@ -270,7 +270,7 @@ public class ScrollRectSnap : MonoBehaviour
 					break;
 				}
 
-				Vector3 position = new Vector3 (CharacterPositionArray [msgRoomNum] + additional, 64, 0);
+				Vector3 position = new Vector3 (CharacterPositionArray [msgRoomNum] + additional, 90, 0);
 				var hash = new Hashtable {
 					{ "position", position },
 					{ "time", 0.5f },
