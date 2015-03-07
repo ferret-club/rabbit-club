@@ -136,8 +136,8 @@ public class Chat : MonoBehaviour
 	public void SendChatMessage ()
 	{
 		string chat = ChatFieldText.text;
-		chat += me;
 		if (chat != "") {
+			chat += me;
 			ws.Send (chat);
 		}
 	}
