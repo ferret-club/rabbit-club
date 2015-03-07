@@ -81,6 +81,7 @@ public class Chat : MonoBehaviour
         // called when websocket messages come.
         ws.OnMessage += (sender, e) =>
         {
+            Debug.Log(sender);
             string s = e.Data;
             Debug.Log(string.Format("Receive {0}", s));
 
