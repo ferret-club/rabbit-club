@@ -10,24 +10,24 @@ public class ChatBackground : MonoBehaviour {
     }
 
     public void OnButtonMaximize () {
-        Vector3 position = new Vector3(0, 1130, 0);
+        Vector3 position = new Vector3(0, 200, 0);
         var hash = new Hashtable
             {
-                { "amount", position },
+                { "position", position },
                 { "time", 0.5f },
                 { "easetype", iTween.EaseType.easeOutCubic }
             };
-        iTween.MoveAdd(chatBackground, hash);
+        iTween.MoveTo(chatBackground, hash);
     }
 
     public void OnButtonMinimize () {
-        Vector3 position = new Vector3(0, -1130, 0);
+        Vector3 position = new Vector3(0, -920, 0);
         var hash = new Hashtable
             {
-                { "amount", position },
+                { "position", position },
                 { "time", 0.5f },
                 { "easetype", iTween.EaseType.easeOutCubic }
             };
-        iTween.MoveAdd(chatBackground, hash);
+        iTween.MoveTo(chatBackground, hash);
     }
 }
