@@ -62,16 +62,14 @@ public class Chat : MonoBehaviour
 					if (message.IndexOf (me) >= 0) {
 						var item = GameObject.Instantiate (MyPrefab) as RectTransform;
 						var text = item.GetComponentInChildren<Text> ();
-						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
-						image.sprite = spriteList [0];
 						text.text = message.Replace (me, "");
 						item.SetParent (transform, false);
 					} else {
 						var item = GameObject.Instantiate (prefab) as RectTransform;
 						var text = item.GetComponentInChildren<Text> ();
 						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
-						image.sprite = spriteList [text.text.Length % 3 + 1];
 						text.text = message;
+						image.sprite = spriteList [text.text.Length % 3 + 1];
 						item.SetParent (transform, false);
 					}
 				}
