@@ -26,6 +26,7 @@ public class ScrollRectSnap : MonoBehaviour
 	public bool snapInV = true;
 	bool dragInit = true;
 	int dragStartNearest;
+	int roomNumber;
 
 	private SocketIOComponent socket;
 	string clientId;
@@ -40,12 +41,25 @@ public class ScrollRectSnap : MonoBehaviour
 	[SerializeField]
 	GameObject PlayerParent = null;
 
+	[SerializeField]
+	GameObject TickerObject = null;
+
 	private int[] CharacterPositionArray = {
 		-2630,
 		-1550,
 		-470,
 		610,
 		1690
+	};
+
+	Dictionary<string, string> CharacterName
+	= new Dictionary<string, string> () {
+		{ "PlayerRabbit", "うさぎさん" },
+		{ "PlayerRabbit(Clone)", "うさぎさん" },
+		{ "PlayerDog", "いぬさん" },
+		{ "PlayerDog(Clone)", "いぬさん" },
+		{ "PlayerBird", "とりさん" },
+		{ "PlayerBird(Clone)", "とりさん" }
 	};
 
 	// Use this for initialization
@@ -126,18 +140,28 @@ public class ScrollRectSnap : MonoBehaviour
 	int FindNearest (float f, float[] array)
 	{
 		float distance = Mathf.Infinity;
-		int output = 0;
+		roomNumber = 0;
 		for (int index = 0; index < array.Length; index++) {
 			if (Mathf.Abs (array [index] - f) < distance) {
 				distance = Mathf.Abs (array [index] - f);
-				output = index;
+				roomNumber = index;
 			}
 		}
 		Dictionary<string, string> data = new Dictionary<string, string> ();
 		data ["clientId"] = clientId;
-		data ["roomNum"] = output.ToString ();
+		data ["roomNum"] = roomNumber.ToString ();
+		data ["ticker"] = "NO";
 		socket.Emit ("sendMsgFromClient", new JSONObject (data));
-		return output;
+		return roomNumber;
+	}
+
+	public void SendTicker ()
+	{
+		Dictionary<string, string> data = new Dictionary<string, string> ();
+		data ["clientId"] = clientId;
+		data ["roomNum"] = roomNumber.ToString ();
+		data ["ticker"] = "YES";
+		socket.Emit ("sendMsgFromClient", new JSONObject (data));
 	}
 
 	public void OnSocketOpen (SocketIOEvent e)
@@ -170,6 +194,8 @@ public class ScrollRectSnap : MonoBehaviour
 		//Debug.Log("[SocketIO] msg from server: " + e.name + " " + e.data);
 		string msgCid = e.data.GetField ("clientId").str;
 		int msgRoomNum = int.Parse (e.data.GetField ("roomNum").str);
+		string msgTicker = e.data.GetField ("ticker").str;
+
 		if (msgCid != clientId) {
 			Debug.Log (msgRoomNum);
 			if (!connections.ContainsKey (msgCid)) {
@@ -207,14 +233,18 @@ public class ScrollRectSnap : MonoBehaviour
 					break;
 				}
 
-                Vector3 position = new Vector3(CharacterPositionArray [msgRoomNum] + additional, 64, 0);
-                var hash = new Hashtable
-                    {
-                        { "position", position },
-                        { "time", 0.5f },
-                        { "easetype", iTween.EaseType.easeOutCubic }
-                    };
-                iTween.MoveTo(player, hash);
+				Vector3 position = new Vector3 (CharacterPositionArray [msgRoomNum] + additional, 64, 0);
+				var hash = new Hashtable {
+					{ "position", position },
+					{ "time", 0.5f },
+					{ "easetype", iTween.EaseType.easeOutCubic }
+				};
+				iTween.MoveTo (player, hash);
+
+				if (msgTicker == "YES") {
+					Ticker ticker = TickerObject.GetComponent<Ticker> ();
+					ticker.OnTicker (CharacterName [player.name]);
+				}
 			}
 		}
 	}
@@ -234,5 +264,7 @@ public class ScrollRectSnap : MonoBehaviour
 		public string clientId  { get; set; }
 
 		public int roomNum   { get; set; }
+
+		public string ticker { get; set; }
 	}
 }

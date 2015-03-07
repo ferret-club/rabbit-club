@@ -355,7 +355,7 @@ GameObject:
   - 222: {fileID: 150149871}
   - 114: {fileID: 150149870}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TickerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -661,6 +661,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 391221030}
         m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1399760279}
+        m_MethodName: SendTicker
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1102,14 +1114,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 24878164}
         m_MethodName: OnTicker
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: "\u304F\u307E\u3084\u308D\u3046"
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -2509,6 +2521,7 @@ MonoBehaviour:
   - {fileID: 188576, guid: a69cd2d5f8a994afeaa66c839f1f46dc, type: 2}
   - {fileID: 188576, guid: a69cd2d5f8a994afeaa66c839f1f46dc, type: 2}
   PlayerParent: {fileID: 744606844}
+  TickerObject: {fileID: 24878160}
 --- !u!114 &1399760280
 MonoBehaviour:
   m_ObjectHideFlags: 0
