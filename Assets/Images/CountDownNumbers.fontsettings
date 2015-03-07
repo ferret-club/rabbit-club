@@ -19,9 +19,9 @@ Font:
     index: 0
     uv:
       serializedVersion: 2
-      x: .843999982
+      x: .58099997
       y: 0
-      width: .0960000008
+      width: .0659999996
       height: 1
     vert:
       serializedVersion: 2
@@ -37,7 +37,7 @@ Font:
       serializedVersion: 2
       x: 0
       y: 0
-      width: .0719999969
+      width: .0500000007
       height: 1
     vert:
       serializedVersion: 2
@@ -51,9 +51,9 @@ Font:
     index: 2
     uv:
       serializedVersion: 2
-      x: .0719999969
+      x: .0500000007
       y: 0
-      width: .0960000008
+      width: .0659999996
       height: 1
     vert:
       serializedVersion: 2
@@ -67,9 +67,9 @@ Font:
     index: 3
     uv:
       serializedVersion: 2
-      x: .169
+      x: .115999997
       y: 0
-      width: .0939999968
+      width: .064000003
       height: 1
     vert:
       serializedVersion: 2
@@ -83,9 +83,9 @@ Font:
     index: 4
     uv:
       serializedVersion: 2
-      x: .261999995
+      x: .180999994
       y: 0
-      width: .0979999974
+      width: .0670000017
       height: 1
     vert:
       serializedVersion: 2
@@ -99,9 +99,9 @@ Font:
     index: 5
     uv:
       serializedVersion: 2
-      x: .360000014
+      x: .247999996
       y: 0
-      width: .0949999988
+      width: .0649999976
       height: 1
     vert:
       serializedVersion: 2
@@ -115,9 +115,9 @@ Font:
     index: 6
     uv:
       serializedVersion: 2
-      x: .455000013
+      x: .312999994
       y: 0
-      width: .0979999974
+      width: .0670000017
       height: 1
     vert:
       serializedVersion: 2
@@ -131,9 +131,9 @@ Font:
     index: 7
     uv:
       serializedVersion: 2
-      x: .552999973
+      x: .381000012
       y: 0
-      width: .0949999988
+      width: .0649999976
       height: 1
     vert:
       serializedVersion: 2
@@ -147,9 +147,9 @@ Font:
     index: 8
     uv:
       serializedVersion: 2
-      x: .648000002
+      x: .44600001
       y: 0
-      width: .0960000008
+      width: .0659999996
       height: 1
     vert:
       serializedVersion: 2
@@ -163,9 +163,9 @@ Font:
     index: 9
     uv:
       serializedVersion: 2
-      x: .745000005
+      x: .513000011
       y: 0
-      width: .0989999995
+      width: .0680000037
       height: 1
     vert:
       serializedVersion: 2
@@ -179,9 +179,9 @@ Font:
     index: 10
     uv:
       serializedVersion: 2
-      x: .939999998
+      x: .647000015
       y: 0
-      width: .0560000017
+      width: .0410000011
       height: 1
     vert:
       serializedVersion: 2
