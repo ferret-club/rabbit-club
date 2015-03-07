@@ -70,7 +70,6 @@ public class Chat : MonoBehaviour
 						var text = item.GetComponentInChildren<Text> ();
 						string[] splitMessage = message.Split ('[');
 						text.text = splitMessage [0];
-						text.text = message;
 						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
 						image.sprite = spriteList [text.text.Length % 3 + 1];
 						item.SetParent (transform, false);
