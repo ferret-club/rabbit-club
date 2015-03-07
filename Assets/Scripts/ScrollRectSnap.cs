@@ -35,7 +35,7 @@ public class ScrollRectSnap : MonoBehaviour
 	private Dictionary<string, GameObject> playerObjects = new Dictionary<string, GameObject> ();
 
 	[SerializeField]
-	GameObject PlayerPrefab = null;
+	GameObject[] PlayerPrefabArray = null;
 
 	[SerializeField]
 	GameObject PlayerParent = null;
@@ -175,15 +175,38 @@ public class ScrollRectSnap : MonoBehaviour
 			if (!connections.ContainsKey (msgCid)) {
 				connections.Add (msgCid, connectId);
 				Debug.Log ("crate");
-				GameObject player = (GameObject)Instantiate (PlayerPrefab);
+				Debug.Log (connections.Count);
+				GameObject player = (GameObject)Instantiate (PlayerPrefabArray [connections.Count - 2]);
 				player.transform.parent = PlayerParent.transform;
-				player.transform.position = new Vector2 (CharacterPositionArray [2], 64);
-				player.name = msgCid;
+				int additional = 0;
+				switch (player.name) {
+				case "PlayerRabbit(Clone)":
+					additional = 0;
+					break;
+				case "PlayerDog(Clone)":
+					additional = 160;
+					break;
+				case "PlayerBird(Clone)":
+					additional = 320;
+					break;
+				}
+				player.transform.position = new Vector2 (CharacterPositionArray [2] + additional, 64);
 				playerObjects [msgCid] = player;
 			} else {
-				//                GameObject player = GameObject.Find(msgCid);
 				GameObject player = playerObjects [msgCid];
-				player.transform.position = new Vector2 (CharacterPositionArray [msgRoomNum], 64);
+				int additional = 0;
+				switch (player.name) {
+				case "PlayerRabbit(Clone)":
+					additional = 0;
+					break;
+				case "PlayerDog(Clone)":
+					additional = 160;
+					break;
+				case "PlayerBird(Clone)":
+					additional = 320;
+					break;
+				}
+				player.transform.position = new Vector2 (CharacterPositionArray [msgRoomNum] + additional, 64);
 			}
 		}
 	}
