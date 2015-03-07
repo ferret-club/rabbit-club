@@ -5,6 +5,8 @@ public class GameController : MonoBehaviour
 {
 	public int targetFrameRate = 60;
 
+    GameObject buttonGroup;
+
 	void Awake ()
 	{
 		Application.targetFrameRate = targetFrameRate;
@@ -12,7 +14,8 @@ public class GameController : MonoBehaviour
 
 	void Start ()
 	{
-            
+        buttonGroup = GameObject.Find ("Door/ButtonGroup");
+        buttonGroup.SetActive(false);
 	}
 
 	void Update ()
