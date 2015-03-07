@@ -8,6 +8,6 @@ public class ResultExit : MonoBehaviour
 	{
 		GameObject DontDestroyObject = GameObject.Find ("DontDestroyObject") as GameObject;
 		Object.Destroy (DontDestroyObject);
-		Application.LoadLevel ("Lobby");
+		Application.LoadLevel ("main");
 	}
 }
