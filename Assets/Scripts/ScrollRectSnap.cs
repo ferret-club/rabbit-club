@@ -26,7 +26,7 @@ public class ScrollRectSnap : MonoBehaviour {
     void Start()
     {
         scroll = gameObject.GetComponent<ScrollRect>();
-        scroll.inertia = true;
+        //scroll.inertia = true;
         if (screens > 0)
         {
             points = new float[screens];
