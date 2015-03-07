@@ -206,7 +206,15 @@ public class ScrollRectSnap : MonoBehaviour
 					additional = 320;
 					break;
 				}
-				player.transform.position = new Vector2 (CharacterPositionArray [msgRoomNum] + additional, 64);
+
+                Vector3 position = new Vector3(CharacterPositionArray [msgRoomNum] + additional, 64, 0);
+                var hash = new Hashtable
+                    {
+                        { "position", position },
+                        { "time", 0.5f },
+                        { "easetype", iTween.EaseType.easeOutCubic }
+                    };
+                iTween.MoveTo(player, hash);
 			}
 		}
 	}
