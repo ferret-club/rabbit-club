@@ -12,6 +12,8 @@ public class ItemManager : MonoBehaviour {
 	private Item selectedItem;
     public GameObject[] itemButtons;
     public Sprite[] itemImages;
+	// アイテムの説明を表示する領域
+	public Message messageArea;
 
 	void Start () {
         generateItems();
