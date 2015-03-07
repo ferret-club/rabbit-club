@@ -15,4 +15,11 @@ public class GameController : MonoBehaviour {
     void Update () {
     
     }
+
+    public void goResultScene() {
+//		GameObject chatObject = GameObject.Find("Canvas/ScrollRect 2") as GameObject;
+//		Debug.Log ("name:" + chatObject.name);
+//		DontDestroyOnLoad(chatObject);
+		Application.LoadLevel("ResultScene");
+    }
 }
