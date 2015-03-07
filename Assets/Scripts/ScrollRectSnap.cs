@@ -26,7 +26,7 @@ public class ScrollRectSnap : MonoBehaviour
 	public bool snapInV = true;
 	bool dragInit = true;
 	int dragStartNearest;
-	int roomNumber;
+	int roomNumber = 2;
 
 	private SocketIOComponent socket;
 	string clientId;
@@ -88,7 +88,12 @@ public class ScrollRectSnap : MonoBehaviour
 		socket.On ("disConnectIdFromServer", OnSocketDisConnectIdFromServer);
 		socket.On ("error", OnSocketError);
 		socket.On ("close", OnSocketClose);	
-//		playerPrefab = (GameObject)Resources.Load("player");
+
+		Dictionary<string, string> data = new Dictionary<string, string> ();
+		data ["clientId"] = clientId;
+		data ["roomNum"] = "2";
+		data ["ticker"] = "NO";
+		socket.Emit ("sendMsgFromClient", new JSONObject (data));
 	}
 
 	void Update ()
