@@ -8,11 +8,11 @@ public class GameController : MonoBehaviour {
         Application.targetFrameRate = targetFrameRate;
     }
 
-	void Start () {
-    	    
-	}
-	
-	void Update () {
-	
-	}
+    void Start () {
+            
+    }
+    
+    void Update () {
+    
+    }
 }
