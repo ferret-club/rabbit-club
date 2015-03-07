@@ -86,10 +86,6 @@ public class Chat : MonoBehaviour
 
             messageQueue.Enqueue(s);
             messages.Add(e.Data);
-            if (messages.Count > 30)
-            {
-                messages.RemoveAt(0);
-            }
         };
 
         ws.Connect();
@@ -114,6 +110,9 @@ public class Chat : MonoBehaviour
         GameObject ChatFieldGameObject = GameObject.Find("ChatInputText") as GameObject;
         Text ChatFieldText = ChatFieldGameObject.GetComponent<Text>();
         string chat = ChatFieldText.text;
-        ws.Send(chat);
+        if (chat != "")
+        {
+            ws.Send(chat);
+        }
     }
 }
