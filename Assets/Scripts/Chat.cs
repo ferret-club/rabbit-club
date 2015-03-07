@@ -12,19 +12,26 @@ public class Chat : MonoBehaviour
 	RectTransform prefab = null;
 
 	string message = "";
-	List<string> messages = new List<string> ();
+    List<string> messages = new List<string> ();
 
 	WebSocket ws;
 	Queue messageQueue;
 
 	Text ChatFieldText;
 
+    public Sprite chatIcon0;
+    public Sprite chatIcon1;
+    public Sprite chatIcon2;
+    public Sprite chatIcon3;
+    Sprite[] spriteList;
+
 	// Use this for initialization
 	void Start ()
 	{
 		Connect ();
+        spriteList = new Sprite[]{chatIcon0, chatIcon1, chatIcon2, chatIcon3 };
 		for (int i = 0; i < 15; i++) {
-			messages.Add ("ほげ");
+            messages.Add ("ほげ");
 		}
 		GameObject ChatFieldGameObject = GameObject.Find ("ChatInputText");
 		ChatFieldText = ChatFieldGameObject.GetComponent<Text> ();
@@ -38,13 +45,16 @@ public class Chat : MonoBehaviour
 				foreach (Transform n in gameObject.transform) {
 					GameObject.Destroy (n.gameObject);
 				}
-				messages.Reverse ();
+                messages.Reverse ();
 				for (int i = 0; i < messages.Count; i++) {
 					var item = GameObject.Instantiate (prefab) as RectTransform;
 					item.SetParent (transform, false);
 
 					var text = item.GetComponentInChildren<Text> ();
 					text.text = messages [i];
+
+                    Image image = item.FindChild("ChatIcon").GetComponent<Image> ();
+                    image.sprite = spriteList[text.text.Length % 3 + 1];
 				}
 				Debug.Log (messageQueue.Dequeue ());
 				messages.Reverse ();
