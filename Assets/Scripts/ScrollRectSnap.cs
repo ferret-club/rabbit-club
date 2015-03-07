@@ -35,6 +35,23 @@ public class ScrollRectSnap : MonoBehaviour
 	private Hashtable connections = new Hashtable ();
 	private Dictionary<string, GameObject> playerObjects = new Dictionary<string, GameObject> ();
 
+	bool isLobby = true;
+
+	[SerializeField]
+	GameObject Lobby = null;
+
+	[SerializeField]
+	GameObject RabbitLogin = null;
+
+	[SerializeField]
+	GameObject DogLogin = null;
+
+	[SerializeField]
+	GameObject BirdLogin = null;
+
+	[SerializeField]
+	GameObject CountDownTimer = null;
+
 	[SerializeField]
 	GameObject[] PlayerPrefabArray = null;
 
@@ -88,12 +105,6 @@ public class ScrollRectSnap : MonoBehaviour
 		socket.On ("disConnectIdFromServer", OnSocketDisConnectIdFromServer);
 		socket.On ("error", OnSocketError);
 		socket.On ("close", OnSocketClose);	
-
-		Dictionary<string, string> data = new Dictionary<string, string> ();
-		data ["clientId"] = clientId;
-		data ["roomNum"] = "2";
-		data ["ticker"] = "NO";
-		socket.Emit ("sendMsgFromClient", new JSONObject (data));
 	}
 
 	void Update ()
@@ -107,6 +118,14 @@ public class ScrollRectSnap : MonoBehaviour
 			scroll.verticalNormalizedPosition = Mathf.Lerp (scroll.verticalNormalizedPosition, targetV, snapSpeed * Time.deltaTime);
 			if (Mathf.Approximately (scroll.verticalNormalizedPosition, targetV))
 				LerpV = false;
+		}
+
+		if (isLobby) {
+			Dictionary<string, string> data = new Dictionary<string, string> ();
+			data ["clientId"] = clientId;
+			data ["roomNum"] = "2";
+			data ["ticker"] = "NO";
+			socket.Emit ("sendMsgFromClient", new JSONObject (data));
 		}
 	}
 
@@ -196,6 +215,7 @@ public class ScrollRectSnap : MonoBehaviour
 
 	public void OnSocketSendMsgFromServer (SocketIOEvent e)
 	{
+
 		//Debug.Log("[SocketIO] msg from server: " + e.name + " " + e.data);
 		string msgCid = e.data.GetField ("clientId").str;
 		int msgRoomNum = int.Parse (e.data.GetField ("roomNum").str);
@@ -223,6 +243,18 @@ public class ScrollRectSnap : MonoBehaviour
 				}
 				player.transform.position = new Vector2 (CharacterPositionArray [2] + additional, 90);
 				playerObjects [msgCid] = player;
+
+				if (connections.Count == 2) {
+					RabbitLogin.SetActive (true);
+				}
+
+				if (connections.Count == 3) {
+					DogLogin.SetActive (true);
+				}
+
+				if (connections.Count == 4) {
+					BirdLogin.SetActive (true);
+				}
 			} else {
 				GameObject player = playerObjects [msgCid];
 				int additional = 0;
@@ -251,7 +283,24 @@ public class ScrollRectSnap : MonoBehaviour
 					ticker.OnTicker (CharacterName [player.name]);
 				}
 			}
+
+			if (isLobby && connections.Count >= 4) {
+				StartCoroutine ("OnLoadMainFromLobby");
+			}
 		}
+	}
+
+	private IEnumerator OnLoadMainFromLobby ()
+	{
+		yield return new WaitForSeconds (3.0f);
+		OnLoadMain ();
+	}
+
+	public void OnLoadMain ()
+	{
+		isLobby = false;
+		Lobby.SetActive (false);
+		CountDownTimer.SetActive (true);
 	}
 
 	public void OnSocketError (SocketIOEvent e)
