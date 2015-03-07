@@ -29,7 +29,7 @@ public class Chat : MonoBehaviour
 	Sprite[] spriteList;
 
 	int rdm;
-	string me = "[me]";
+	string me;
 
 	// Use this for initialization
 	void Start ()
@@ -43,7 +43,7 @@ public class Chat : MonoBehaviour
 		ChatFieldText = ChatFieldGameObject.GetComponent<Text> ();
 
 		rdm = UnityEngine.Random.Range (1, 100000);
-		me += rdm;
+		me = "[" + rdm + "]";
 	}
 
 	// Update is called once per frame
@@ -62,13 +62,16 @@ public class Chat : MonoBehaviour
 					if (message.IndexOf (me) >= 0) {
 						var item = GameObject.Instantiate (MyPrefab) as RectTransform;
 						var text = item.GetComponentInChildren<Text> ();
-						text.text = message.Replace (me, "");
+						string[] splitMessage = message.Split ('[');
+						text.text = splitMessage [0];
 						item.SetParent (transform, false);
 					} else {
 						var item = GameObject.Instantiate (prefab) as RectTransform;
 						var text = item.GetComponentInChildren<Text> ();
-						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
+						string[] splitMessage = message.Split ('[');
+						text.text = splitMessage [0];
 						text.text = message;
+						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
 						image.sprite = spriteList [text.text.Length % 3 + 1];
 						item.SetParent (transform, false);
 					}
