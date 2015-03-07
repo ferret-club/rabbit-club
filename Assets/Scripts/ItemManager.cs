@@ -13,9 +13,9 @@ public class ItemManager : MonoBehaviour {
 
 	void Start () {
         generateItems();
-//        getItem(1);
-//        getItem(0);
-//        removeItem(1);
+        getItem(1);
+        getItem(0);
+        removeItem(1);
 //		getItem(10);
 //		getItem(8);
 //		getItem(6);
@@ -28,8 +28,8 @@ public class ItemManager : MonoBehaviour {
     // アイテム初期設定
     void generateItems() {
 		items = new Item[12];
-		items[0] = new Item(0, "ねずみの文鎮", "説明1");
-		items[1] = new Item(1, "うしのカップ", "説明2");
+		items[0] = new Item(0, "ねずみの文鎮", "【ねずみの文鎮】だ\n暗がりでみるととってもリアル！");
+		items[1] = new Item(1, "うしのカップ", "【うしのカップ】だ\nつぶらな瞳がとってもチャーミング！");
 		items[2] = new Item(2, "とらの電池", "説明3");
 		items[3] = new Item(3, "うさぎの靴下", "説明3"); // 初めからあるのでアイテム画像設定なし
 		items[4] = new Item(4, "りゅうのじょうろ", "説明3");
@@ -72,4 +72,14 @@ public class ItemManager : MonoBehaviour {
         // 所有しているアイテムを無くす
         haveItems[id] = null;
     }
+
+	// アイテム選択処理。
+	public void OnSelectedItem(int id) {
+		// 一旦全ての選択状態を解除する
+		for(int index = 0; index < itemButtons.Length; index++) {
+			itemButtons[index].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = false;
+		}
+		// タッチされた自分自身の選択状態だけOnにする
+		itemButtons[id].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = true;
+	}
 }
