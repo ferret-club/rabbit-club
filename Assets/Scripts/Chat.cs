@@ -8,52 +8,51 @@ using UnityEngine.UI;
 
 public class Chat : MonoBehaviour
 {
-    [SerializeField]
-    RectTransform prefab = null;
+	[SerializeField]
+	RectTransform prefab = null;
 
-    string message = "";
-    List<string> messages = new List<string>();
+	string message = "";
+	List<string> messages = new List<string> ();
 
-    WebSocket ws;
-    Queue messageQueue;
+	WebSocket ws;
+	Queue messageQueue;
 
-    // Use this for initialization
-    void Start()
-    {
-        Connect();
-        for (int i = 0; i < 15; i++)
-        {
-            messages.Add("ほげ");
-        }
-    }
+	Text ChatFieldText;
 
-    // Update is called once per frame
-    void Update()
-    {
-        lock (messageQueue.SyncRoot)
-        {
-            if (messageQueue.Count > 0)
-            {
-                foreach (Transform n in gameObject.transform)
-                {
-                    GameObject.Destroy(n.gameObject);
-                }
-                messages.Reverse();
-                for (int i = 0; i < messages.Count; i++)
-                {
-                    var item = GameObject.Instantiate(prefab) as RectTransform;
-                    item.SetParent(transform, false);
+	// Use this for initialization
+	void Start ()
+	{
+		Connect ();
+		for (int i = 0; i < 15; i++) {
+			messages.Add ("ほげ");
+		}
+		GameObject ChatFieldGameObject = GameObject.Find ("ChatInputText");
+		ChatFieldText = ChatFieldGameObject.GetComponent<Text> ();
+	}
 
-                    var text = item.GetComponentInChildren<Text>();
-                    text.text = messages[i];
-                }
-                Debug.Log(messageQueue.Dequeue());
-                messages.Reverse();
-            }
-        }
-    }
+	// Update is called once per frame
+	void Update ()
+	{
+		lock (messageQueue.SyncRoot) {
+			if (messageQueue.Count > 0) {
+				foreach (Transform n in gameObject.transform) {
+					GameObject.Destroy (n.gameObject);
+				}
+				messages.Reverse ();
+				for (int i = 0; i < messages.Count; i++) {
+					var item = GameObject.Instantiate (prefab) as RectTransform;
+					item.SetParent (transform, false);
 
-    /*
+					var text = item.GetComponentInChildren<Text> ();
+					text.text = messages [i];
+				}
+				Debug.Log (messageQueue.Dequeue ());
+				messages.Reverse ();
+			}
+		}
+	}
+
+	/*
     void OnGUI()
     {
         // Input text
@@ -72,28 +71,27 @@ public class Chat : MonoBehaviour
     }
     */
 
-    void Connect()
-    {
-        ws = new WebSocket("ws://210.140.161.190:9000/chat/ws");
+	void Connect ()
+	{
+		ws = new WebSocket ("ws://210.140.161.190:9000/chat/ws");
 
-        messageQueue = Queue.Synchronized(new Queue());
+		messageQueue = Queue.Synchronized (new Queue ());
 
-        // called when websocket messages come.
-        ws.OnMessage += (sender, e) =>
-        {
-            Debug.Log(sender);
-            string s = e.Data;
-            Debug.Log(string.Format("Receive {0}", s));
+		// called when websocket messages come.
+		ws.OnMessage += (sender, e) => {
+			Debug.Log (sender);
+			string s = e.Data;
+			Debug.Log (string.Format ("Receive {0}", s));
 
-            messageQueue.Enqueue(s);
-            messages.Add(e.Data);
-        };
+			messageQueue.Enqueue (s);
+			messages.Add (e.Data);
+		};
 
-        ws.Connect();
-        Debug.Log("Connect to " + ws.Url);
-    }
+		ws.Connect ();
+		Debug.Log ("Connect to " + ws.Url);
+	}
 
-    /*
+	/*
     void SendChatMessage()
     {
         if (message == "")
@@ -106,14 +104,11 @@ public class Chat : MonoBehaviour
     }
     */
 
-    public void SendChatMessage()
-    {
-        GameObject ChatFieldGameObject = GameObject.Find("ChatInputText") as GameObject;
-        Text ChatFieldText = ChatFieldGameObject.GetComponent<Text>();
-        string chat = ChatFieldText.text;
-        if (chat != "")
-        {
-            ws.Send(chat);
-        }
-    }
+	public void SendChatMessage ()
+	{
+		string chat = ChatFieldText.text;
+		if (chat != "") {
+			ws.Send (chat);
+		}
+	}
 }

@@ -1,25 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameController : MonoBehaviour {
-    public int targetFrameRate = 60;
+public class GameController : MonoBehaviour
+{
+	public int targetFrameRate = 60;
 
-    void Awake () {
-        Application.targetFrameRate = targetFrameRate;
-    }
+	void Awake ()
+	{
+		Application.targetFrameRate = targetFrameRate;
+	}
 
-    void Start () {
+	void Start ()
+	{
             
-    }
-    
-    void Update () {
-    
-    }
+	}
 
-    public void goResultScene() {
-//		GameObject chatObject = GameObject.Find("Canvas/ScrollRect 2") as GameObject;
-//		Debug.Log ("name:" + chatObject.name);
-//		DontDestroyOnLoad(chatObject);
-		Application.LoadLevel("ResultScene");
-    }
+	void Update ()
+	{
+    
+	}
+
+	public void goResultScene ()
+	{
+		GameObject chatObject = GameObject.Find ("Canvas/ScrollRect 2") as GameObject;
+		GameObject chatFieldObject = GameObject.Find ("Canvas/ChatBackground") as GameObject;
+		GameObject DontDestroyObject = GameObject.Find ("DontDestroyObject") as GameObject;
+		Debug.Log ("name:" + chatObject.name);
+		chatObject.transform.parent = DontDestroyObject.transform;
+		chatFieldObject.transform.parent = DontDestroyObject.transform;
+		Application.LoadLevel ("ResultScene");
+	}
 }
