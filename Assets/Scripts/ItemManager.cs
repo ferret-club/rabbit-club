@@ -8,6 +8,8 @@ public class ItemManager : MonoBehaviour {
     private Item[] items;
     // 所有しているアイテム
     public Item[] haveItems;
+	// 選択しているアイテム
+	private Item selectedItem;
     public GameObject[] itemButtons;
     public Sprite[] itemImages;
 
@@ -16,7 +18,7 @@ public class ItemManager : MonoBehaviour {
         getItem(1);
         getItem(0);
         removeItem(1);
-//		getItem(10);
+		getItem(10);
 //		getItem(8);
 //		getItem(6);
 //		getItem(2);
@@ -79,7 +81,15 @@ public class ItemManager : MonoBehaviour {
 		for(int index = 0; index < itemButtons.Length; index++) {
 			itemButtons[index].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = false;
 		}
-		// タッチされた自分自身の選択状態だけOnにする
-		itemButtons[id].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = true;
+		// 選択しているアイテムを解除
+		selectedItem = null;
+		for (int i = 0; i < haveItems.Length; i++) {
+			if (haveItems[i] != null && haveItems[i].ImgIndex == id) {
+				// 選択しているアイテムを設定
+				selectedItem = haveItems[i];
+				// タッチされた自分自身の選択状態だけOnにする
+				itemButtons[id].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = true;
+			}
+		}
 	}
 }
