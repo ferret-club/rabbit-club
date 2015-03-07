@@ -3629,8 +3629,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 824007158}
-        m_MethodName: goResultScene
+      - m_Target: {fileID: 1399760279}
+        m_MethodName: SendEnding
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
