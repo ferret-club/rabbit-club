@@ -9,7 +9,8 @@ public class ItemManager : MonoBehaviour {
     // 所有しているアイテム
     public Item[] haveItems;
 	// 選択しているアイテム
-	private Item selectedItem;
+	[HideInInspector]
+	public Item selectedItem;
     public GameObject[] itemButtons;
     public Sprite[] itemImages;
 	// アイテムの説明を表示する領域
