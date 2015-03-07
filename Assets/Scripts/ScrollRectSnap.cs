@@ -171,6 +171,7 @@ public class ScrollRectSnap : MonoBehaviour
 		string msgCid = e.data.GetField ("clientId").str;
 		int msgRoomNum = int.Parse (e.data.GetField ("roomNum").str);
 		if (msgCid != clientId) {
+			Debug.Log (msgRoomNum);
 			if (!connections.ContainsKey (msgCid)) {
 				connections.Add (msgCid, connectId);
 				Debug.Log ("crate");
