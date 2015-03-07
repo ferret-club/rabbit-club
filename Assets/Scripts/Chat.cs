@@ -11,30 +11,39 @@ public class Chat : MonoBehaviour
 	[SerializeField]
 	RectTransform prefab = null;
 
+	[SerializeField]
+	RectTransform MyPrefab = null;
+
 	string message = "";
-    List<string> messages = new List<string> ();
+	List<string> messages = new List<string> ();
 
 	WebSocket ws;
 	Queue messageQueue;
 
 	Text ChatFieldText;
 
-    public Sprite chatIcon0;
-    public Sprite chatIcon1;
-    public Sprite chatIcon2;
-    public Sprite chatIcon3;
-    Sprite[] spriteList;
+	public Sprite chatIcon0;
+	public Sprite chatIcon1;
+	public Sprite chatIcon2;
+	public Sprite chatIcon3;
+	Sprite[] spriteList;
+
+	int rdm;
+	string me = "[me]";
 
 	// Use this for initialization
 	void Start ()
 	{
 		Connect ();
-        spriteList = new Sprite[]{chatIcon0, chatIcon1, chatIcon2, chatIcon3 };
+		spriteList = new Sprite[]{ chatIcon0, chatIcon1, chatIcon2, chatIcon3 };
 		for (int i = 0; i < 15; i++) {
-            messages.Add ("ほげ");
+			messages.Add ("ほげ");
 		}
 		GameObject ChatFieldGameObject = GameObject.Find ("ChatInputText");
 		ChatFieldText = ChatFieldGameObject.GetComponent<Text> ();
+
+		rdm = UnityEngine.Random.Range (1, 100000);
+		me += rdm;
 	}
 
 	// Update is called once per frame
@@ -45,16 +54,26 @@ public class Chat : MonoBehaviour
 				foreach (Transform n in gameObject.transform) {
 					GameObject.Destroy (n.gameObject);
 				}
-                messages.Reverse ();
+				messages.Reverse ();
 				for (int i = 0; i < messages.Count; i++) {
-					var item = GameObject.Instantiate (prefab) as RectTransform;
-					item.SetParent (transform, false);
 
-					var text = item.GetComponentInChildren<Text> ();
-					text.text = messages [i];
 
-                    Image image = item.FindChild("ChatIcon").GetComponent<Image> ();
-                    image.sprite = spriteList[text.text.Length % 3 + 1];
+					string message = messages [i];
+					if (message.IndexOf (me) >= 0) {
+						var item = GameObject.Instantiate (MyPrefab) as RectTransform;
+						var text = item.GetComponentInChildren<Text> ();
+						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
+						image.sprite = spriteList [0];
+						text.text = message.Replace (me, "");
+						item.SetParent (transform, false);
+					} else {
+						var item = GameObject.Instantiate (prefab) as RectTransform;
+						var text = item.GetComponentInChildren<Text> ();
+						Image image = item.FindChild ("ChatIcon").GetComponent<Image> ();
+						image.sprite = spriteList [text.text.Length % 3 + 1];
+						text.text = message;
+						item.SetParent (transform, false);
+					}
 				}
 				Debug.Log (messageQueue.Dequeue ());
 				messages.Reverse ();
@@ -117,6 +136,7 @@ public class Chat : MonoBehaviour
 	public void SendChatMessage ()
 	{
 		string chat = ChatFieldText.text;
+		chat += me;
 		if (chat != "") {
 			ws.Send (chat);
 		}

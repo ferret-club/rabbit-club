@@ -491,7 +491,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 101250, guid: 30873ab43e2714707b5133335b738787, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22457482, guid: 30873ab43e2714707b5133335b738787, type: 2}
       propertyPath: m_RootOrder
@@ -1777,6 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 22476800, guid: 18f272875fb484afc9c248e011e3c0de, type: 2}
+  MyPrefab: {fileID: 22436630, guid: 5722ac652703f4da1a74000e682ab88a, type: 2}
   chatIcon0: {fileID: 21300000, guid: 21926ae0876524833b68aab223c6c48e, type: 3}
   chatIcon1: {fileID: 21300000, guid: 35492af3f92c14797b948c9543173c61, type: 3}
   chatIcon2: {fileID: 21300000, guid: f998c0fea52d640eebe6a36307ec2bde, type: 3}
