@@ -9,12 +9,15 @@ public class Message : MonoBehaviour, IPointerClickHandler {
 	bool visible = false;
 
 	void Start() {
-		me = this.transform.FindChild("Msg").GetComponent<Text>();
+		var obj = this.transform.FindChild("Msg");
+		if(obj != null) {
+			me = obj.GetComponent<Text>();
+		}
 	}
 
 	// このPanelがクリックされた時に呼ばれる
 	public void OnPointerClick (PointerEventData eventData) {
-		OffMessage();
+		OffMessageTween();
 	}
 
 	public void OnMessage(string msg) {
@@ -31,7 +34,15 @@ public class Message : MonoBehaviour, IPointerClickHandler {
 		setMessage(msg);
     }
 
-    public void OffMessage() {
+	public void OffMessage() {
+		if (visible) {
+			this.transform.position = new Vector3(0, -47.0f, 0);
+			visible = false;
+		}
+		setMessage("");
+	}
+
+	public void OffMessageTween() {
 		if (visible) {
 			Vector3 position = new Vector3(0, -207, 0);
 			var hash = new Hashtable
@@ -45,7 +56,7 @@ public class Message : MonoBehaviour, IPointerClickHandler {
 		setMessage("");
     }
 
-	public void setMessage(string msg) {
+	private void setMessage(string msg) {
 		me.text = msg;
 	}
 }

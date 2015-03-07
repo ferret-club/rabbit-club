@@ -21,12 +21,12 @@ public class ItemManager : MonoBehaviour {
         getItem(0);
         removeItem(1);
 		getItem(10);
-//		getItem(8);
-//		getItem(6);
-//		getItem(2);
-//		getItem(1);
-//		getItem(5);
-//		getItem(4);
+		getItem(8);
+		getItem(6);
+		getItem(2);
+		getItem(1);
+		getItem(5);
+		getItem(4);
 	}
 
     // アイテム初期設定
@@ -34,16 +34,16 @@ public class ItemManager : MonoBehaviour {
 		items = new Item[12];
 		items[0] = new Item(0, "ねずみの文鎮", "【ねずみの文鎮】だ\n暗がりでみるととってもリアル！");
 		items[1] = new Item(1, "うしのカップ", "【うしのカップ】だ\nつぶらな瞳がとってもチャーミング！");
-		items[2] = new Item(2, "とらの電池", "説明3");
-		items[3] = new Item(3, "うさぎの靴下", "説明3"); // 初めからあるのでアイテム画像設定なし
-		items[4] = new Item(4, "りゅうのじょうろ", "説明3");
-		items[5] = new Item(5, "へびのナイフ", "説明3");
-		items[6] = new Item(6, "うまの絵の皿", "説明3");
-		items[7] = new Item(7, "ひつじのミトン", "説明3"); // 初めからあるのでアイテム画像設定なし
-		items[8] = new Item(8, "さるの腰かけ", "説明3");
-		items[9] = new Item(9, "とりの傘", "説明3"); // 初めからあるのでアイテム画像設定なし
-		items[10] = new Item(10, "いぬのティッシュカバー", "説明3");
-		items[11] = new Item(11, "いのししのミニカー", "説明3"); // 初めからあるのでアイテム画像設定なし
+		items[2] = new Item(2, "とらの電池", "【とらの電池】だ\nなんでも動かせるくらいパワフル！");
+		items[3] = new Item(3, "うさぎの靴下", "【うさぎの靴下】だ"); // 初めからあるのでアイテム画像設定なし
+		items[4] = new Item(4, "りゅうのじょうろ", "【りゅうのじょうろだ】だ\n龍の力で植物が急成長！……なんてね");
+		items[5] = new Item(5, "へびのナイフ", "【へびのナイフ】だ\n長くて使いづらいが切れ味はバツグン！");
+		items[6] = new Item(6, "うまの絵の皿", "【うまの絵の皿】だ\n緻密なタッチで描かれている");
+		items[7] = new Item(7, "ひつじのミトン", "【ひつじのミトン】だ"); // 初めからあるのでアイテム画像設定なし
+		items[8] = new Item(8, "さるの腰かけ", "【さるの腰かけ】だ\nきのこではない");
+		items[9] = new Item(9, "とりの傘", "【とりの傘】だ"); // 初めからあるのでアイテム画像設定なし
+		items[10] = new Item(10, "いぬのティッシュカバー", "【いぬのティッシュカバー】だ\nプレゼントにいいかもしれない");
+		items[11] = new Item(11, "いのししのミニカー", "【いのししのミニカー】だ"); // 初めからあるのでアイテム画像設定なし
         // 所持アイテムを初期化する
         haveItems = new Item[items.Length];
         for(int id = 0; id < haveItems.Length; id++) {
@@ -79,6 +79,8 @@ public class ItemManager : MonoBehaviour {
 
 	// アイテム選択処理。
 	public void OnSelectedItem(int id) {
+		// メッセージ領域を初期化
+		messageArea.OffMessage();
 		// 一旦全ての選択状態を解除する
 		for(int index = 0; index < itemButtons.Length; index++) {
 			itemButtons[index].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = false;
@@ -91,6 +93,7 @@ public class ItemManager : MonoBehaviour {
 				selectedItem = haveItems[i];
 				// タッチされた自分自身の選択状態だけOnにする
 				itemButtons[id].transform.FindChild("SelectedImg").GetComponent<Image>().enabled = true;
+				messageArea.OnMessage(selectedItem.description);
 			}
 		}
 	}
