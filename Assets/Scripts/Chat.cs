@@ -37,7 +37,7 @@ public class Chat : MonoBehaviour
 		Connect ();
 		spriteList = new Sprite[]{ chatIcon0, chatIcon1, chatIcon2, chatIcon3 };
 		for (int i = 0; i < 15; i++) {
-			messages.Add ("ほげ");
+			messages.Add ("よろしく");
 		}
 		GameObject ChatFieldGameObject = GameObject.Find ("ChatInputText");
 		ChatFieldText = ChatFieldGameObject.GetComponent<Text> ();
