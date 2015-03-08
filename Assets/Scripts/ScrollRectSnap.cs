@@ -33,6 +33,7 @@ public class ScrollRectSnap : MonoBehaviour
 	string connectId;
 	private Message message = new Message ();
 	private Hashtable connections = new Hashtable ();
+	private Hashtable endingState = new Hashtable ();
 	private Dictionary<string, GameObject> playerObjects = new Dictionary<string, GameObject> ();
 
 	bool isLobby = true;
@@ -97,6 +98,7 @@ public class ScrollRectSnap : MonoBehaviour
 		int rdm = UnityEngine.Random.Range (1, 100);
 		clientId = SystemInfo.deviceUniqueIdentifier + rdm;
 		connections.Add (clientId, "");
+		endingState.Add (clientId, "OFF");
 		GameObject go = GameObject.Find ("SocketIO");
 		socket = go.GetComponent<SocketIOComponent> ();
 		socket.On ("open", OnSocketOpen);
@@ -125,6 +127,7 @@ public class ScrollRectSnap : MonoBehaviour
 			data ["clientId"] = clientId;
 			data ["roomNum"] = "2";
 			data ["ticker"] = "NO";
+			data ["endButton"] = "OFF";
 			socket.Emit ("sendMsgFromClient", new JSONObject (data));
 		}
 	}
@@ -175,6 +178,7 @@ public class ScrollRectSnap : MonoBehaviour
 		data ["clientId"] = clientId;
 		data ["roomNum"] = roomNumber.ToString ();
 		data ["ticker"] = "NO";
+		data ["endButton"] = "OFF";
 		socket.Emit ("sendMsgFromClient", new JSONObject (data));
 		return roomNumber;
 	}
@@ -185,6 +189,30 @@ public class ScrollRectSnap : MonoBehaviour
 		data ["clientId"] = clientId;
 		data ["roomNum"] = roomNumber.ToString ();
 		data ["ticker"] = "YES";
+		data ["endButton"] = "OFF";
+		socket.Emit ("sendMsgFromClient", new JSONObject (data));
+	}
+
+	public void SendEnding ()
+	{
+		endingState [clientId] = "ON";
+
+		int onButtonCount = 0;
+		foreach (DictionaryEntry button in endingState) {
+			if (button.Value == "ON") {
+				onButtonCount++;
+			}
+		}
+
+		if (onButtonCount >= 4) {
+			Application.LoadLevel ("ResultScene");
+		}
+
+		Dictionary<string, string> data = new Dictionary<string, string> ();
+		data ["clientId"] = clientId;
+		data ["roomNum"] = roomNumber.ToString ();
+		data ["ticker"] = "NO";
+		data ["endButton"] = "ON";
 		socket.Emit ("sendMsgFromClient", new JSONObject (data));
 	}
 
@@ -220,11 +248,13 @@ public class ScrollRectSnap : MonoBehaviour
 		string msgCid = e.data.GetField ("clientId").str;
 		int msgRoomNum = int.Parse (e.data.GetField ("roomNum").str);
 		string msgTicker = e.data.GetField ("ticker").str;
+		string msgEndButton = e.data.GetField ("endButton").str;
 
 		if (msgCid != clientId) {
 			Debug.Log (msgRoomNum);
 			if (!connections.ContainsKey (msgCid)) {
 				connections.Add (msgCid, connectId);
+				endingState.Add (msgCid, "OFF");
 				Debug.Log ("crate");
 				Debug.Log (connections.Count);
 				GameObject player = (GameObject)Instantiate (PlayerPrefabArray [connections.Count - 2]);
@@ -282,6 +312,21 @@ public class ScrollRectSnap : MonoBehaviour
 					Ticker ticker = TickerObject.GetComponent<Ticker> ();
 					ticker.OnTicker (CharacterName [player.name]);
 				}
+
+				if (msgEndButton == "ON") {
+					endingState [msgCid] = "ON";
+				}
+			}
+
+			int onButtonCount = 0;
+			foreach (DictionaryEntry button in endingState) {
+				if (button.Value == "ON") {
+					onButtonCount++;
+				}
+			}
+
+			if (onButtonCount >= 4) {
+				Application.LoadLevel ("ResultScene");
 			}
 
 			if (isLobby && connections.Count >= 4) {
@@ -320,5 +365,7 @@ public class ScrollRectSnap : MonoBehaviour
 		public int roomNum   { get; set; }
 
 		public string ticker { get; set; }
+
+		public string endButton { get; set; }
 	}
 }
