@@ -22,6 +22,8 @@ public class Ticker : MonoBehaviour
 			{ "time", 0.5f },
 		};
 		iTween.MoveAdd (gameObject, hash);
+
+        Invoke("OffTicker", 5);
 	}
 
 	public void OffTicker ()
