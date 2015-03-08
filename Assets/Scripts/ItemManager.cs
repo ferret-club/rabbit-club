@@ -18,16 +18,11 @@ public class ItemManager : MonoBehaviour {
 
 	void Start () {
         generateItems();
-        getItem(1);
-        getItem(0);
-        removeItem(1);
-		getItem(10);
+		getItem(3);
 		getItem(8);
-		getItem(6);
-		getItem(2);
-		getItem(1);
-		getItem(5);
-		getItem(4);
+		getItem(7);
+		getItem(11);
+		getItem(9);
 	}
 
     // アイテム初期設定
