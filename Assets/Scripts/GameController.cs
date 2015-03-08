@@ -25,12 +25,18 @@ public class GameController : MonoBehaviour
 
 	public void goResultScene ()
 	{
-		GameObject chatObject = GameObject.Find ("Canvas/ScrollRect 2") as GameObject;
+		GameObject chatObject = GameObject.Find ("Canvas/RowerObject/ScrollRect 2") as GameObject;
 		GameObject chatFieldObject = GameObject.Find ("Canvas/ChatBackground") as GameObject;
 		GameObject DontDestroyObject = GameObject.Find ("DontDestroyObject") as GameObject;
 		Debug.Log ("name:" + chatObject.name);
 		chatObject.transform.parent = DontDestroyObject.transform;
 		chatFieldObject.transform.parent = DontDestroyObject.transform;
-		Application.LoadLevel ("ResultScene");
+        Invoke("LoadResult", 3);
+		
 	}
+
+    void LoadResult ()
+    {
+        Application.LoadLevel ("ResultScene");
+    }
 }
