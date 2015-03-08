@@ -57,6 +57,10 @@ public class Message : MonoBehaviour, IPointerClickHandler {
     }
 
 	private void setMessage(string msg) {
+        if(me == null) {
+            var obj = this.transform.FindChild("Msg");
+            me = obj.GetComponent<Text>();
+        }
 		me.text = msg;
 	}
 }

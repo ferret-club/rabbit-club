@@ -7,7 +7,7 @@ public class EventMessage : MonoBehaviour {
 	Message messageArea;
 
 	void Start() {
-		messageArea = GameObject.Find("Message").GetComponent<Message>();
+        messageArea = GameObject.Find("RowerObject/Message").GetComponent<Message>();
 	}
 	
 	public void OnClick() {

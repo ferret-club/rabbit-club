@@ -5,7 +5,7 @@ using System.Collections;
 
 public class CountDownTimer : MonoBehaviour {
 
-	private float startTime = 180.0f;
+    private float startTime = 300.0f;
 	private float timer;
 	private Text me;
 	[HideInInspector]
