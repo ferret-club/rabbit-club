@@ -16,13 +16,14 @@ public class EventAnswer : MonoBehaviour {
 		GameObject obj = GameObject.Find("InventoryPanel");
 		itemManager = obj.GetComponent<ItemManager>();
 		pickUpItem = GameObject.Find("PickUpItemButton").GetComponent<PickUpItem>();
-		messageArea = GameObject.Find("Message").GetComponent<Message>();
+		messageArea = GameObject.Find("RowerObject/Message").GetComponent<Message>();
 		scrollRectSnap = GameObject.Find("Canvas/ScrollRect").GetComponent<ScrollRectSnap>();
 	}
 	
 	public void OnClick() {
 		// アイテムが選択されていて答えと合っている。もしくは答えが-1は無条件で手に入る。
 		if ((itemManager.selectedItem != null && itemManager.selectedItem.id == answerId) || answerId == -1) {
+			messageArea.PlayClickSe();
 			itemManager.getItem (rewardId);
 			pickUpItem.OnPickUp (rewardId);
 			messageArea.OnMessage (rewardMsg);
