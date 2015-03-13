@@ -7,12 +7,16 @@ public class Message : MonoBehaviour, IPointerClickHandler {
 
 	Text me;
 	bool visible = false;
+	public AudioClip audioClip;
+	private AudioSource audioSource;
 
 	void Start() {
 		var obj = this.transform.FindChild("Msg");
 		if(obj != null) {
 			me = obj.GetComponent<Text>();
 		}
+		audioSource = this.gameObject.GetComponent<AudioSource>();
+		audioSource.clip = audioClip;
 	}
 
 	// このPanelがクリックされた時に呼ばれる
@@ -62,5 +66,9 @@ public class Message : MonoBehaviour, IPointerClickHandler {
             me = obj.GetComponent<Text>();
         }
 		me.text = msg;
+	}
+
+	public void PlayClickSe() {
+		audioSource.Play();
 	}
 }

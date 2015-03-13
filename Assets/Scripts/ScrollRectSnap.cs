@@ -298,6 +298,8 @@ public class ScrollRectSnap : MonoBehaviour
 
 	public void OnLoadMain ()
 	{
+		GameObject MusicManagerObj = GameObject.Find("MusicManager") as GameObject;
+		MusicManagerObj.GetComponent<MusicManager>().PlayBgm();
 		isLobby = false;
 		Lobby.SetActive (false);
 		CountDownTimer.SetActive (true);
