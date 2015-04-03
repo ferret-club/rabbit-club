@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using SocketIO;
 using LitJson;
 
-public class ScrollRectSnap : MonoBehaviour
+public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 {
 
 	float[] points;
@@ -129,7 +130,7 @@ public class ScrollRectSnap : MonoBehaviour
 		}
 	}
 
-	public void DragEnd ()
+	public void DragEnd()
 	{
 		int target = FindNearest (scroll.horizontalNormalizedPosition, points);
 		if (target == dragStartNearest && scroll.velocity.sqrMagnitude > inertiaCutoffMagnitude * inertiaCutoffMagnitude) {
@@ -323,4 +324,10 @@ public class ScrollRectSnap : MonoBehaviour
 
 		public string ticker { get; set; }
 	}
+
+	public void OnEndDrag(PointerEventData eventData)
+	{
+		DragEnd();
+	}
+
 }
