@@ -11,10 +11,10 @@ public class NetworkManager : MonoBehaviour {
 	const string LocalServerIP = "127.0.0.1"; // 開発用.
 	const int ServerPort = 25000;
 
-	string playerName = "";
-	string gameServerName = "";
-
 	bool useNat = false; // natパンチスルーを使用するか.
+
+	[SerializeField]
+	private Text statusText;
 
 	// 状態.
 	public enum Status {
@@ -33,7 +33,7 @@ public class NetworkManager : MonoBehaviour {
 		ServerNameIsEmpty,      // サーバー名が入力されていない
 		SearchingHosts,         // ホスト検索中
 	};
-	Status _status = Status.NoError;
+	public Status _status = Status.NoError;
 	public Status status {
 		get{
 			return _status;
@@ -43,44 +43,16 @@ public class NetworkManager : MonoBehaviour {
 			statusText.text = _status.ToString();
 		}
 	}
-	RoomManager roomManager;
-
-	// UI周りへの参照
 	[SerializeField]
-	private InputField serverNameInputField;
-	[SerializeField]
-	private Text statusText;
-	float timer;
-	int waitingTime;
-
-	void Start () {
-		// テスト
-		roomManager = this.transform.FindChild("ServerList").GetComponent<RoomManager>();
-//		for(int i = 1; i <= 9; i++) {
-//			GameObject node = roomManager.addNode();
-//			ServerButton serverButton = node.transform.GetComponent<ServerButton>();
-//			serverButton.init("room" + i, "guid" + i, false, this);
-//		}
-//		roomManager.refreshShowNode();
-	}
-
-	void Update () {
-		if(waitingTime > 0) {
-			timer += Time.deltaTime;
-			if(timer > waitingTime) {
-				createHostButtons();
-				timer = 0;
-				waitingTime = 0;
-			}
-		}
-	}
+	private NetworkShare networkShare;
+	// 接続後の処理を行う
+	public delegate void AfterConnect();
+	public event AfterConnect OnAfterConnect;
 
 	// サーバーを起動する.
-	public void LaunchServer() {
-		// 入力欄からサーバー名を取得する
-		gameServerName = serverNameInputField.text;
+	public void LaunchServer(string gameServerName) {
 		if(gameServerName == null || gameServerName == "") {
-			// 取得できない場合はステータスにエラーを渡して終了
+			// サーバー名が取得できない場合はステータスにエラーを渡して終了
 			status = Status.ServerNameIsEmpty;
 		} else {
 			status = Status.LaunchingServer;
@@ -93,16 +65,16 @@ public class NetworkManager : MonoBehaviour {
 		yield return StartCoroutine(CheckNat());
 
 		// サーバーを起動する.
-		NetworkConnectionError error = Network.InitializeServer(32, ServerPort, useNat);
+		NetworkConnectionError error = Network.InitializeServer(4, ServerPort, useNat);
 		if(error != NetworkConnectionError.NoError) {
 			Debug.Log("Can't Launch Server");
 			status = Status.LaunchServerFailed;
-		} else if(gameServerName == null || gameServerName == "") {
+		} else if(roomName == null || roomName == "") {
 			Debug.Log("ServerName Empty.");
 			status = Status.LaunchServerFailed;
 		} else {
 			// マスターサーバーにゲームサーバーを登録する.
-			MasterServer.RegisterHost(GameTypeName, gameServerName);
+			MasterServer.RegisterHost(GameTypeName, roomName);
 		}
 	}
 
@@ -167,7 +139,7 @@ public class NetworkManager : MonoBehaviour {
 				break;
 
 			default: 
-				Debug.Log ( "Error in test routine, got " + connectionTestResult);
+				Debug.Log("Error in test routine, got " + connectionTestResult);
 				break;
 			}
 			yield return null;
@@ -191,11 +163,26 @@ public class NetworkManager : MonoBehaviour {
 	// サーバーが起動した.
 	void OnServerInitialized() {
 		status = Status.ServerLaunched;
+		// ホスト自身のユーザー数を増やす
+		networkShare.userCnt++;
+		// ホスト自身はplayerNum=1
+		DontDestroy.playerNum = 1;
+		// 接続後の処理を行う
+		if(OnAfterConnect != null) {
+			OnAfterConnect();
+		}
+		// サーバー自身をユーザーとして登録
+		networkShare.updatePosition(DontDestroy.playerNum, (int)DontDestroy.avater, 2);
+		networkShare.setAvaterActive();
 	}
 
 	// サーバーに接続した.
 	void OnConnectedToServer() {
 		status = Status.ConnectedToServer;
+		// 接続後の処理を行う
+		if(OnAfterConnect != null) {
+			OnAfterConnect();
+		}
 	}
 
 	// サーバーへの接続に失敗した.
@@ -204,10 +191,21 @@ public class NetworkManager : MonoBehaviour {
 		status = Status.ConnectToServerFailed;
 	}
 
+	// プレイヤーが接続した
+	void OnPlayerConnected(NetworkPlayer player) {
+		// ユーザー数を増やす
+		networkShare.userCnt++;
+		networkShare.setUserCntForYou(player, networkShare.userCnt);
+		// ユーザーが増えたらサーバー側のプレイヤー情報を送りアバターアクティブを見直す
+		networkShare.updatePosition(DontDestroy.playerNum, (int)DontDestroy.avater, 2);
+		networkShare.setAvaterActive();
+	}
+
 	// プレイヤーが切断した.（サーバーが動作しているコンピュータで呼び出される）.
 	void OnPlayerDisconnected(NetworkPlayer player) {
 		Network.RemoveRPCs(player);
 		Network.DestroyPlayerObjects(player);
+		networkShare.userCnt--;
 	}
 
 	// サーバーから切断された.
@@ -222,11 +220,6 @@ public class NetworkManager : MonoBehaviour {
 		return status;
 	}
 
-	// プレイヤーネームを得る.
-	public string GetPlayerName() {
-		return playerName;
-	}
-
 	void OnDestroy() {
 		if (Network.isServer) {
 			MasterServer.UnregisterHost();
@@ -239,7 +232,6 @@ public class NetworkManager : MonoBehaviour {
 	public void UpdateHostList() {
 		status = Status.SearchingHosts;
 		MasterServer.RequestHostList(GameTypeName);
-		waitingTime = 2;
 	}
 
 	// マスターサーバに登録されているゲームサーバのリストを取得する.
@@ -256,26 +248,5 @@ public class NetworkManager : MonoBehaviour {
 	// マスターサーバーへの登録を削除する.
 	public void UnregisterHost() {
 		MasterServer.UnregisterHost();
-	}
-
-	void createHostButtons() {
-		HostData[] hosts = GetHostList();  // サーバ一覧を取得.
-		Debug.Log("call createHostButtons():" + hosts.Length);
-		if (hosts.Length > 0) {
-			foreach(HostData host in hosts) {
-				Debug.Log("host name:" + host.gameName);
-//				GameObject obj = Instantiate(serverButtonPrefab) as GameObject;
-				// 実体化したプレハブをこのソースがアタッチされているオブジェクトの子要素にする
-//				obj.transform.SetParent(this.transform);
-//				obj.transform.localPosition = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y - 550);
-//				ServerButton serverButton = obj.transform.GetComponent<ServerButton>();
-//				serverButton.init(host.gameName, host.guid, false, this);
-				GameObject node = roomManager.addNode();
-				ServerButton serverButton = node.transform.GetComponent<ServerButton>();
-				serverButton.init(host.gameName, host.guid, false, this);
-			}
-			roomManager.refreshShowNode();
-			MasterServer.ClearHostList();
-		}
 	}
 }

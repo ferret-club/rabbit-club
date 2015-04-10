@@ -14,7 +14,7 @@ public class PickUpItem : MonoBehaviour {
 		itemImg = this.transform.FindChild("ItemImg").GetComponent<Image>();
 	}
 	
-	// _idに表示したいアイテムL画像のIDを私て下さい
+	// _idに表示したいアイテムL画像のIDを渡して下さい
 	public void OnPickUp(int _id) {
 		me.enabled = true;
 		itemImg.enabled = true;

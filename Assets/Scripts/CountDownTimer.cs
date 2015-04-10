@@ -9,7 +9,7 @@ public class CountDownTimer : MonoBehaviour {
 	private float timer;
 	private Text me;
 	[HideInInspector]
-	public bool paused = false;
+	public bool paused = true;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +33,7 @@ public class CountDownTimer : MonoBehaviour {
 		me.text = string.Format("{0:00}:{1:00}", Math.Floor (timer / 60f), Math.Floor (timer % 60f));
 	}
 
-	void initialize() {
+	public void initialize() {
 		timer = startTime;
 	}
 }
