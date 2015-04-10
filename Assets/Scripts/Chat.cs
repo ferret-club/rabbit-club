@@ -14,7 +14,7 @@ public class Chat : MonoBehaviour
 	[SerializeField]
 	RectTransform MyPrefab = null;
 
-	string message = "";
+//	string message = "";
 	List<string> messages = new List<string> ();
 
 	WebSocket ws;
