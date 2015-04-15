@@ -10,7 +10,7 @@ public class NetworkShare : MonoBehaviour {
 	[HideInInspector]
 	public int userCnt;
 	private GameObject scrollContent;
-	private struct UserAvater {
+	public struct UserAvater {
 		public int playerNum;
 		public int avater;
 		public float roomNumber;
@@ -64,12 +64,21 @@ public class NetworkShare : MonoBehaviour {
 		}
 	}
 
-	// 現在（見ている）位置を送信する
+	// 現在（見ている）位置を自分を含めた全員に送信する
 	public void updatePosition(int playerNum, int avater, int roomNumber) {
 		if (networkManager != null && (
 			networkManager.GetStatus () == NetworkManager.Status.ConnectedToServer
 			|| networkManager.GetStatus () == NetworkManager.Status.ServerLaunched)) {
 			GetComponent<NetworkView>().RPC("setAvaterPosition", RPCMode.All, new object[]{playerNum, avater, roomNumber});
+		}
+	}
+
+	// 現在（見ている）位置を自分以外の全員に送信する
+	public void updatePositionOthers(int playerNum, int avater, int roomNumber) {
+		if (networkManager != null && (
+			networkManager.GetStatus () == NetworkManager.Status.ConnectedToServer
+			|| networkManager.GetStatus () == NetworkManager.Status.ServerLaunched)) {
+			GetComponent<NetworkView>().RPC("setAvaterPosition", RPCMode.Others, new object[]{playerNum, avater, roomNumber});
 		}
 	}
 
@@ -93,7 +102,7 @@ public class NetworkShare : MonoBehaviour {
 			userSync[1] = userAvater;
 		} else if(DontDestroy.playerNum != 1 && playerNum == 1) {
 //			Debug.Log("setAvaterPosition()2 playerNum:" + playerNum + " DontDestroy.playerNum:" + DontDestroy.playerNum + " avater:" + avater);
-			// サーバー以外かつ1なら自分自身のナンバーに1のアバターを入れる
+			// サーバー以外かつ1なら自分自身のナンバーに1(サーバー)のアバターを入れる
 			userAvater.playerNum = DontDestroy.playerNum;
 			userSync[DontDestroy.playerNum] = userAvater;
 			if (avaters.ContainsKey (userAvater.playerNum)) {

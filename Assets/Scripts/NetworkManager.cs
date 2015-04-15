@@ -196,9 +196,13 @@ public class NetworkManager : MonoBehaviour {
 		// ユーザー数を増やす
 		networkShare.userCnt++;
 		networkShare.setUserCntForYou(player, networkShare.userCnt);
-		// ユーザーが増えたらサーバー側のプレイヤー情報を送りアバターアクティブを見直す
-		networkShare.updatePosition(DontDestroy.playerNum, (int)DontDestroy.avater, 2);
-		networkShare.setAvaterActive();
+		// ユーザーが増えたらサーバーの持っているプレイヤー情報を配る
+		if (networkShare.userSync.Count > 0) {
+			foreach (NetworkShare.UserAvater user in networkShare.userSync.Values) {
+				networkShare.updatePositionOthers(user.playerNum, (int)user.avater, 2);
+			}
+			networkShare.setAvaterActive();
+		}
 	}
 
 	// プレイヤーが切断した.（サーバーが動作しているコンピュータで呼び出される）.
