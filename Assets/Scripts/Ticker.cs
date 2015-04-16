@@ -16,7 +16,7 @@ public class Ticker : MonoBehaviour
 	}
 
 	public void callTicker() {
-		Debug.Log("callTicker()");
+//		Debug.Log("callTicker()");
 		// ネットワーク接続が確立されていれば接続先にもメッセージを送る
 		if (networkManager != null && 
 			(networkManager.GetStatus() == NetworkManager.Status.ConnectedToServer
@@ -27,7 +27,7 @@ public class Ticker : MonoBehaviour
 
 	[RPC]
 	public void OnTicker(string characterName) {
-		Debug.Log("OnTicker() characterName" + characterName);
+//		Debug.Log("OnTicker() characterName" + characterName);
 		TickerText.text = characterName + "がアイテムを見つけました！";
 		Vector3 position = new Vector3 (0, -96, 0);
 		var hash = new Hashtable {

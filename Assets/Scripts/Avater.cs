@@ -19,6 +19,11 @@ public class Avater : MonoBehaviour {
 			return;
 		}
 		float localMoveX = movePositionX;
+		// 部屋が一気に移動することがあるので、その差を得る
+		int roomDistance = Mathf.Abs(prevRoomNumber - roomNumber);
+		if(roomDistance != 0) {
+			localMoveX *= roomDistance;
+		}
 		if (prevRoomNumber > roomNumber) {
 			localMoveX = -localMoveX;
 		}

@@ -34,6 +34,7 @@ public class Message : MonoBehaviour, IPointerClickHandler {
 			};
 			iTween.MoveAdd(gameObject, hash);
 			visible = true;
+			Invoke("OffMessageTween", 5);
 		}
 		setMessage(msg);
     }

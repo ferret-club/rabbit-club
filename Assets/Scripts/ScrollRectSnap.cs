@@ -29,6 +29,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 	bool dragInit = true;
 	int dragStartNearest;
 	int roomNumber = 2;
+	int target = 2;
 
 	private SocketIOComponent socket;
 	string clientId;
@@ -62,8 +63,30 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 	void Update() {
 		if(LerpH) {
 			scroll.horizontalNormalizedPosition = Mathf.Lerp (scroll.horizontalNormalizedPosition, targetH, snapSpeed * Time.deltaTime);
-			if (Mathf.Approximately (scroll.horizontalNormalizedPosition, targetH))
+			float targetPositionX = 0;
+			switch(target) {
+			case 0:
+				targetPositionX = 2160;
+				break;
+			case 1:
+				targetPositionX = 1080;
+				break;
+			case 3:
+				targetPositionX = -1080;
+				break;
+			case 4:
+				targetPositionX = -2160;
+				break;
+			case 2:
+			default:
+				targetPositionX = 0;
+				break;
+			}
+			if(Mathf.Abs(scrollContent.transform.localPosition.x - targetPositionX) < 1) {
 				LerpH = false;
+				// 他のユーザーにもアバターの位置情報を送る
+				networkShare.updatePosition (DontDestroy.playerNum, (int)DontDestroy.avater, target);
+			}
 		}
 		if(LerpV) {
 			scroll.verticalNormalizedPosition = Mathf.Lerp (scroll.verticalNormalizedPosition, targetV, snapSpeed * Time.deltaTime);
@@ -74,7 +97,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 
 	public void DragEnd()
 	{
-		int target = FindNearest(scroll.horizontalNormalizedPosition, points);
+		target = FindNearest(scroll.horizontalNormalizedPosition, points);
 		if (target == dragStartNearest && scroll.velocity.sqrMagnitude > inertiaCutoffMagnitude * inertiaCutoffMagnitude) {
 			if (scroll.velocity.x < 0) {
 				target = dragStartNearest + 1;
@@ -92,8 +115,6 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 			LerpH = true;
 		}
 		dragInit = true;
-		// 他のユーザーにもアバターの位置情報を送る
-		networkShare.updatePosition(DontDestroy.playerNum, (int)DontDestroy.avater, target);
 	}
 
 	public void OnDrag() {
@@ -118,7 +139,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 		return roomNumber;
 	}
 
-	public void OnLoadMain ()
+	public void OnLoadMain()
 	{
 		GameObject MusicManagerObj = GameObject.Find("MusicManager") as GameObject;
 		MusicManagerObj.GetComponent<MusicManager>().PlayBgm();
