@@ -18,6 +18,7 @@ public class NetworkShare : MonoBehaviour {
 	// 位置同期用
 	public Dictionary<int, object> userSync = new Dictionary<int, object>();
 	private Dictionary<int, GameObject> avaters = new Dictionary<int, GameObject>();
+	public Ticker ticker;
 
 	void Start() {
 		scrollContent = GameObject.Find("Canvas/ScrollRect/Content").gameObject;
@@ -123,5 +124,19 @@ public class NetworkShare : MonoBehaviour {
 		}
 	}
 
+	public void callTicker() {
+		// ネットワーク接続が確立されていれば接続先にもメッセージを送る
+		if (networkManager != null && 
+			(networkManager.GetStatus() == NetworkManager.Status.ConnectedToServer
+				|| networkManager.GetStatus() == NetworkManager.Status.ServerLaunched)) {
+			GetComponent<NetworkView>().RPC("OnTicker", RPCMode.Others, new object[] {DontDestroy.playerName});
+		}
+	}
+
+	[RPC]
+	public void OnTicker(string characterName) {
+		// TickerにNetworkViewを付けるとTickerオブジェクト自体が同期され自分のTickerも動いてしまうため、NetworkShare経由で呼び出す
+		ticker.OnTicker(characterName);
+	}
 
 }
