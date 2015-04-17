@@ -11,14 +11,15 @@ public class EventAnswer : MonoBehaviour {
 	ItemManager itemManager;
 	PickUpItem pickUpItem;
 	Message messageArea;
-	Ticker ticker;
+	[SerializeField]
+	NetworkShare networkShare;
 
 	void Start() {
 		GameObject obj = GameObject.Find("InventoryPanel");
 		itemManager = obj.GetComponent<ItemManager>();
 		pickUpItem = GameObject.Find("PickUpItemButton").GetComponent<PickUpItem>();
 		messageArea = GameObject.Find("RowerObject/Message").GetComponent<Message>();
-		ticker = GameObject.Find("Canvas/Ticker").GetComponent<Ticker>();
+		networkShare = GameObject.Find("NetworkShare").GetComponent<NetworkShare>();
 	}
 	
 	public void OnClick() {
@@ -26,8 +27,8 @@ public class EventAnswer : MonoBehaviour {
 		if ((itemManager.selectedItem != null && itemManager.selectedItem.id == answerId) || answerId == -1) {
 			// 音を鳴らす
 			messageArea.PlayClickSe();
-			// 自分以外のプレイヤーにアイテム取得情報を表示する（Ticker表示
-			ticker.callTicker();
+			// 自分以外のプレイヤーにアイテム取得情報を表示する（Ticker表示）
+			networkShare.callTicker();
 			// アイテム取得処理
 			itemManager.getItem(rewardId);
 			// 取得したアイテムを大きく表示する
