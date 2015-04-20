@@ -8342,6 +8342,7 @@ MonoBehaviour:
   networkManager: {fileID: 1172672837}
   userCnt: 0
   ticker: {fileID: 24878164}
+  itemManager: {fileID: 1570880458}
 --- !u!148 &1171355872
 NetworkView:
   m_ObjectHideFlags: 0
