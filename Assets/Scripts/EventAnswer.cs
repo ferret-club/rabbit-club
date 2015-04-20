@@ -11,7 +11,6 @@ public class EventAnswer : MonoBehaviour {
 	ItemManager itemManager;
 	PickUpItem pickUpItem;
 	Message messageArea;
-	[SerializeField]
 	NetworkShare networkShare;
 
 	void Start() {
@@ -30,7 +29,8 @@ public class EventAnswer : MonoBehaviour {
 			// 自分以外のプレイヤーにアイテム取得情報を表示する（Ticker表示）
 			networkShare.callTicker();
 			// アイテム取得処理
-			itemManager.getItem(rewardId);
+			itemManager.getItem(rewardId); // 自分用
+			networkShare.getItem(rewardId, this.name); // 自分以外同期用
 			// 取得したアイテムを大きく表示する
 			pickUpItem.OnPickUp(rewardId);
 			// メッセージエリアにアイテム取得情報を表示する

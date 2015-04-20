@@ -19,6 +19,7 @@ public class NetworkShare : MonoBehaviour {
 	public Dictionary<int, object> userSync = new Dictionary<int, object>();
 	private Dictionary<int, GameObject> avaters = new Dictionary<int, GameObject>();
 	public Ticker ticker;
+	public ItemManager itemManager;
 
 	void Start() {
 		scrollContent = GameObject.Find("Canvas/ScrollRect/Content").gameObject;
@@ -137,6 +138,25 @@ public class NetworkShare : MonoBehaviour {
 	public void OnTicker(string characterName) {
 		// TickerにNetworkViewを付けるとTickerオブジェクト自体が同期され自分のTickerも動いてしまうため、NetworkShare経由で呼び出す
 		ticker.OnTicker(characterName);
+	}
+
+	public void getItem(int rewardId, string itemName) {
+		// ネットワーク接続が確立されていれば接続先にもメッセージを送る
+		if (networkManager != null && 
+			(networkManager.GetStatus() == NetworkManager.Status.ConnectedToServer
+				|| networkManager.GetStatus() == NetworkManager.Status.ServerLaunched)) {
+			GetComponent<NetworkView>().RPC("OnGetItem", RPCMode.Others, new object[] {rewardId, itemName});
+		}
+	}
+
+	[RPC]
+	public void OnGetItem(int rewardId, string itemName) {
+		itemManager.getItem(rewardId);
+		GameObject itemObj = GameObject.Find("Canvas/ScrollRect/Content/Background/" + itemName) as GameObject;
+		if(itemObj != null) {
+			// アイテムを画面から削除する
+			Destroy(itemObj);
+		}
 	}
 
 }
