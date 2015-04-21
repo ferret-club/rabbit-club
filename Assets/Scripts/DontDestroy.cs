@@ -13,6 +13,9 @@ public class DontDestroy : MonoBehaviour
 	public static Avater avater;
 	public static string playerName;
 	public static int playerNum;
+	// リザルト用
+	public static float resultTime;
+	public static bool successFlg;
 
 	void Awake() {
         DontDestroyOnLoad(transform.gameObject);

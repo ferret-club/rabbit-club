@@ -5,13 +5,15 @@ using System.Collections;
 
 public class ResultTime : MonoBehaviour {
 
-    public float resultTime = 74.0f;
+//    public float resultTime = 74.0f;
+	public float resultTime = 0.0f;
     private Text secText;
     private Text minText;
 
 	void Start() {
         secText = this.transform.FindChild("Sec").GetComponent<Text>();
         minText = this.transform.FindChild("Min").GetComponent<Text>();
+		resultTime = DontDestroy.resultTime;
         initialize();
 	}
 	

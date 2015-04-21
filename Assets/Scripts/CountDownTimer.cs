@@ -14,6 +14,7 @@ public class CountDownTimer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		me = this.GetComponent<Text>();
+		paused = true;
 		initialize();
 	}
 	
@@ -35,5 +36,14 @@ public class CountDownTimer : MonoBehaviour {
 
 	public void initialize() {
 		timer = startTime;
+	}
+
+	// タイマーの時刻を取得する
+	public float getTimer() {
+		return timer;
+	}
+
+	public float getResultTime() {
+		return startTime - timer;
 	}
 }
