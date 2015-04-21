@@ -1099,7 +1099,6 @@ MonoBehaviour:
   rewardId: 10
   rewardMsg: "\u3010\u3044\u306C\u306E\u30C6\u30A3\u30C3\u30B7\u30E5\u30AB\u30D0\u30FC\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01"
   nonMsg: 
-  networkShare: {fileID: 0}
 --- !u!114 &102002708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1693,6 +1692,67 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 151177417}
+--- !u!1 &159600380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 159600381}
+  - 222: {fileID: 159600383}
+  - 114: {fileID: 159600382}
+  m_Layer: 5
+  m_Name: NoTapPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &159600381
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159600380}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1383069817}
+  m_RootOrder: 18
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: .5, y: .5}
+--- !u!114 &159600382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159600380}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &159600383
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159600380}
 --- !u!1 &163828803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,7 +1933,6 @@ MonoBehaviour:
   rewardMsg: "\u3010\u3046\u3057\u306E\u30AB\u30C3\u30D7\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01
     \u30DB\u30C3\u30C8\u30DF\u30EB\u30AF\u304C\u98F2\u307F\u305F\u3044\u2026\u2026"
   nonMsg: 
-  networkShare: {fileID: 0}
 --- !u!114 &164020430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4459,7 +4518,6 @@ MonoBehaviour:
   rewardMsg: "\u3010\u3078\u3073\u306E\u30CA\u30A4\u30D5\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01
     \u9577\u3059\u304E\u308B\uFF01 \u3069\u3053\u304B\u3067\u4F7F\u3048\u308B\u304B\u3082\u3057\u308C\u306A\u3044"
   nonMsg: 
-  networkShare: {fileID: 0}
 --- !u!114 &664874986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5859,6 +5917,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetFrameRate: 60
+  countDownTimer: {fileID: 1856269025}
+  failText: {fileID: 874212242}
+  noTapPanel: {fileID: 159600380}
 --- !u!1 &838058845
 GameObject:
   m_ObjectHideFlags: 0
@@ -6368,6 +6429,79 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &874212240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 874212241}
+  - 222: {fileID: 874212244}
+  - 114: {fileID: 874212243}
+  - 114: {fileID: 874212242}
+  m_Layer: 5
+  m_Name: FailText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &874212241
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 874212240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1383069817}
+  m_RootOrder: 17
+  m_AnchorMin: {x: .5, y: .5}
+  m_AnchorMax: {x: .5, y: .5}
+  m_AnchoredPosition: {x: 0, y: 1100}
+  m_SizeDelta: {x: 722, y: 191}
+  m_Pivot: {x: .5, y: .5}
+--- !u!114 &874212242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 874212240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2571245d0c9b84084a9e95cf6d29aad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &874212243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 874212240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 527aa55662a5547cea7553e3d060c564, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &874212244
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 874212240}
 --- !u!1 &884095457
 GameObject:
   m_ObjectHideFlags: 0
@@ -7478,7 +7612,6 @@ MonoBehaviour:
   rewardMsg: "\u3010\u3046\u307E\u306E\u7D75\u306E\u76BF\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01
     \u5C11\u3057\u3060\u3051\u751F\u81ED\u3044\u2026\u2026"
   nonMsg: "\u7ACB\u6D3E\u306A\u30DE\u30B0\u30ED\u3060 \u2026\u2026\u304A\u8179\u304C\u3059\u3053\u3057\u81A8\u3089\u3093\u3067\u3044\u308B\u3088\u3046\u3060"
-  networkShare: {fileID: 0}
 --- !u!114 &1051877782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9395,7 +9528,6 @@ MonoBehaviour:
   rewardId: 0
   rewardMsg: "\u30B9\u30FC\u30D7\u304C\u84B8\u767A\u3057\u3066\u3010\u306D\u305A\u307F\u306E\u6587\u93AE\u3011\u304C\u51FA\u3066\u304D\u305F\uFF01"
   nonMsg: "\u30B3\u30F3\u30ED\u3092\u3064\u3051\u308B\u306B\u306F\u96FB\u6C60\u304C\u5FC5\u8981\u3060"
-  networkShare: {fileID: 0}
 --- !u!114 &1288475296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10077,8 +10209,8 @@ RectTransform:
   m_Children:
   - {fileID: 1399760277}
   - {fileID: 115608535}
-  - {fileID: 1533740473}
   - {fileID: 1629331388}
+  - {fileID: 1533740473}
   - {fileID: 132505976}
   - {fileID: 391221026}
   - {fileID: 1167315607}
@@ -10092,6 +10224,8 @@ RectTransform:
   - {fileID: 561149342}
   - {fileID: 292387190}
   - {fileID: 1866129066}
+  - {fileID: 874212241}
+  - {fileID: 159600381}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
@@ -10603,7 +10737,6 @@ MonoBehaviour:
   rewardMsg: "\u3010\u308A\u3085\u3046\u306E\u3058\u3087\u3046\u308D\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01
     \u3054\u5229\u76CA\u3042\u308A\u305D\u3046\u2026\u2026\uFF01"
   nonMsg: 
-  networkShare: {fileID: 0}
 --- !u!114 &1469416284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10785,7 +10918,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22478472, guid: edbd0ae38585349e388aac650b3c777e, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 22478472, guid: edbd0ae38585349e388aac650b3c777e, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -11167,7 +11300,7 @@ RectTransform:
   - {fileID: 920187181}
   - {fileID: 1925117181}
   m_Father: {fileID: 1383069817}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -12393,7 +12526,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 824007158}
-        m_MethodName: goResultScene
+        m_MethodName: resultSuccess
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12777,7 +12910,6 @@ MonoBehaviour:
   rewardMsg: "\u3010\u3068\u3089\u306E\u96FB\u6C60\u3011\u3092\u624B\u306B\u5165\u308C\u305F\uFF01
     \u5F37\u3044\uFF01 \u3069\u3053\u304B\u3067\u4F7F\u3048\u308B\u304B\u3082\u3057\u308C\u306A\u3044"
   nonMsg: 
-  networkShare: {fileID: 0}
 --- !u!114 &1781107603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13164,6 +13296,12 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 136148, guid: edbd0ae38585349e388aac650b3c777e, type: 2}
   m_PrefabInternal: {fileID: 1533740472}
+--- !u!114 &1856269025
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11460102, guid: edbd0ae38585349e388aac650b3c777e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1533740472}
+  m_Script: {fileID: 11500000, guid: 7650d707dfc4d43918bbc76c5ef4658f, type: 3}
 --- !u!1 &1866129065
 GameObject:
   m_ObjectHideFlags: 0
