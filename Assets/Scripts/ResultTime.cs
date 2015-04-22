@@ -5,7 +5,6 @@ using System.Collections;
 
 public class ResultTime : MonoBehaviour {
 
-//    public float resultTime = 74.0f;
 	public float resultTime = 0.0f;
     private Text secText;
     private Text minText;
