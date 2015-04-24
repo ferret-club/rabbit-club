@@ -61,6 +61,11 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 	}
 
 	void Update() {
+		if(DontDestroy.gameStatus == DontDestroy.GameStatus.Start) {
+			DontDestroy.gameStatus = DontDestroy.GameStatus.Play;
+			gameMainStart();
+		}
+
 		if(LerpH) {
 			scroll.horizontalNormalizedPosition = Mathf.Lerp (scroll.horizontalNormalizedPosition, targetH, snapSpeed * Time.deltaTime);
 			float targetPositionX = 0;
@@ -139,13 +144,22 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 		return roomNumber;
 	}
 
-	public void OnLoadMain()
+	// ゲームを開始ボタンが押された時の処理
+	public void OnLoadMain() {
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Start;
+		networkShare.setGameStatus(DontDestroy.GameStatus.Start);
+	}
+
+	// ゲームを開始する
+	private void gameMainStart()
 	{
 		GameObject MusicManagerObj = GameObject.Find("MusicManager") as GameObject;
 		MusicManagerObj.GetComponent<MusicManager>().PlayBgm();
 		isLobby = false;
-		Lobby.SetActive (false);
+		Lobby.SetActive(false);
+		// 受け取っている最新のアバター情報で自分から見えている他プレイヤーのアバターを表示する
 		networkShare.setAvaterActive();
+		// カウントダウンタイマーを有効にして開始する
 		CountDownTimer.SetActive(true);
 		CountDownTimer.transform.GetComponent<CountDownTimer>().initialize();
 		CountDownTimer.transform.GetComponent<CountDownTimer>().paused = false;

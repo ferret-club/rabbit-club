@@ -55,12 +55,12 @@ public class NetworkShare : MonoBehaviour {
 			// 1は自分自身なので同期表示用アバターに関係ない
 			if (user.playerNum == 1)
 				continue;
-			if (avaters.ContainsKey (user.playerNum)) {
+			if (avaters.ContainsKey(user.playerNum)) {
 				GameObject ava = avaters [user.playerNum];
 				// 無効なら有効にして画像を設定する
 				if (!ava.activeInHierarchy) {
 					ava.SetActive (true);
-					ava.GetComponent<Avater> ().setSprite (user.avater);
+					ava.GetComponent<Avater>().setSprite(user.avater);
 				}
 			}
 		}
@@ -157,6 +157,20 @@ public class NetworkShare : MonoBehaviour {
 			// アイテムを画面から削除する
 			Destroy(itemObj);
 		}
+	}
+
+	// ゲーム状態を送信する
+	public void setGameStatus(DontDestroy.GameStatus gameStatus) {
+		if (networkManager != null && 
+			(networkManager.GetStatus() == NetworkManager.Status.ConnectedToServer
+				|| networkManager.GetStatus() == NetworkManager.Status.ServerLaunched)) {
+			GetComponent<NetworkView>().RPC("OnSetGameStatus", RPCMode.Others, new object[] {(int)gameStatus});
+		}
+	}
+
+	[RPC]
+	public void OnSetGameStatus(int gameStatus) {
+		DontDestroy.gameStatus = (DontDestroy.GameStatus) gameStatus;
 	}
 
 }
