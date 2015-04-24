@@ -11,6 +11,16 @@ public class DontDestroy : MonoBehaviour
 		Bird = 3,
 	}
 	public static Avater avater;
+	public enum GameStatus {
+		Title,
+		Lobby,
+		Room,
+		Start,
+		Play,
+		Success,
+		Failed,
+	}
+	public static GameStatus gameStatus;
 	public static string playerName;
 	public static int playerNum;
 	// リザルト用
