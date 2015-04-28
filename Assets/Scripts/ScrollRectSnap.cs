@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using SocketIO;
 using LitJson;
 
 public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
@@ -31,7 +30,6 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler
 	int roomNumber = 2;
 	int target = 2;
 
-	private SocketIOComponent socket;
 	string clientId;
 	string connectId;
 

@@ -17,6 +17,7 @@ public class DontDestroy : MonoBehaviour
 		Room,
 		Start,
 		Play,
+		Door,
 		Success,
 		Failed,
 	}

@@ -9,10 +9,16 @@ public class GameController : MonoBehaviour
     GameObject buttonGroup;
 	[SerializeField]
 	CountDownTimer countDownTimer;
-	// ゲームオーバー処理は一回しか呼ばない
+	// ゲームオーバー/クリア処理は一回しか呼ばない
 	bool gameOverTrigger = true;
+	bool gameClearTrigger = true;
+	public ClearText clearText;
 	public FailText failText;
 	public GameObject noTapPanel;
+	[SerializeField]
+	NetworkShare networkShare;
+	[SerializeField]
+	GameObject rowerObject;
 
 	void Awake ()
 	{
@@ -22,13 +28,25 @@ public class GameController : MonoBehaviour
 	void Start () {
         buttonGroup = GameObject.Find("Door/ButtonGroup");
         buttonGroup.SetActive(false);
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Lobby;
 	}
 
 	void Update() {
 		// カウントダウンが終了していたらゲームオーバー処理
 		if(gameOverTrigger && countDownTimer.paused && countDownTimer.getTimer() <= 0.0f) {
+			OnResultFailed();
 			resultFailed();
 		}
+		if(gameClearTrigger && DontDestroy.gameStatus == DontDestroy.GameStatus.Success) {
+			resultSuccess();
+		} else if(gameOverTrigger && DontDestroy.gameStatus == DontDestroy.GameStatus.Failed) {
+			resultFailed();
+		}
+	}
+
+	private void OnResultFailed() {
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Failed;
+		networkShare.setGameStatus(DontDestroy.GameStatus.Failed);
 	}
 
 	// 脱出失敗処理
@@ -42,10 +60,20 @@ public class GameController : MonoBehaviour
 		goResultScene(false);
 	}
 
+	public void OnResultSuccess() {
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Success;
+		networkShare.setGameStatus(DontDestroy.GameStatus.Success);
+	}
+
 	// 脱出成功処理
-	public void resultSuccess() {
+	private void resultSuccess() {
+		gameClearTrigger = false;
 		// タイマーを停止する
 		countDownTimer.paused = true;
+		// 前面にパネルを置いて操作を受け付けなくする
+		noTapPanel.transform.GetComponent<Image>().enabled = true;
+		// 文字を表示する
+		clearText.OnCall();
 		// リザルト画面に遷移する
 		goResultScene(true);
 	}
@@ -68,4 +96,12 @@ public class GameController : MonoBehaviour
 	void LoadResult() {
         Application.LoadLevel("ResultScene");
     }
+
+	public void setGameStatusDoor() {
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Door;
+	}
+
+	public void setGameStatusPlay() {
+		DontDestroy.gameStatus = DontDestroy.GameStatus.Play;
+	}
 }
