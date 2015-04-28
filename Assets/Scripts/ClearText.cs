@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ClearText : MonoBehaviour {
 
-    public void OnButtonClear () {
+	public void OnCall() {
         Vector3 position = new Vector3(0, -780, 0);
         var hash = new Hashtable
             {

@@ -30,7 +30,12 @@ public class ChatManager : MonoBehaviour {
 	private List<Node> nodeList = new List<Node>();
 	[SerializeField]
 	private InputField inputField;
-	private bool isMaximize = true;
+	public enum SizeMode {
+		Nomal,
+		Maximize,
+		InDoor,
+	}
+	private SizeMode sizeMode;
 	[SerializeField]
 	NetworkManager networkManager;
 	public Sprite[] avaterIconSprite;
@@ -104,13 +109,22 @@ public class ChatManager : MonoBehaviour {
 		}
 		_node.transform.SetParent(scrollContent.transform);
 		int tmpScrollResizeStartCnt = scrollResizeStartCnt;
-		if (isMaximize) {
+		switch(sizeMode) {
+		case SizeMode.Maximize:
+			break;
 			potisionY = 940.0f;
 			_node.GetComponent<RectTransform> ().sizeDelta = new Vector2 (-0.5f, -1895);
-		} else {
+		case SizeMode.InDoor:
+			potisionY = 270.0f;
+			tmpScrollResizeStartCnt = scrollResizeStartCnt / 2;
+			_node.GetComponent<RectTransform> ().sizeDelta = new Vector2 (-0.5f, -700);
+			break;
+		case SizeMode.Nomal:
+		default:
 			potisionY = 470.0f;
 			tmpScrollResizeStartCnt = scrollResizeStartCnt / 2;
 			_node.GetComponent<RectTransform> ().sizeDelta = new Vector2 (-0.5f, -700);
+			break;
 		}
 
 		if(_nodeCnt >= tmpScrollResizeStartCnt) {
@@ -133,13 +147,18 @@ public class ChatManager : MonoBehaviour {
 	}
 
 	public void resizePanelMinimize() {
-		isMaximize = false;
+		sizeMode = SizeMode.Nomal;
 		resizePanel(-486, -1210);
 	}
 
 	public void resizePanelMaximize() {
-		isMaximize = true;
+		sizeMode = SizeMode.Maximize;
 		resizePanel(57.75006f, -115.5f);
+	}
+
+	public void resizePanelInDoor() {
+		sizeMode = SizeMode.InDoor;
+		resizePanel(-710, -1600);
 	}
 
 	private void resizePanel(float localPositionX, float sizeDeltaY) {

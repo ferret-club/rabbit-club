@@ -3,13 +3,6 @@ using System.Collections;
 
 public class Rower : MonoBehaviour {
 
-    void Start() {
-    }
-
-    void Update() {
-    }
-
-
     public void OnButtonUp () {
         Vector3 position = new Vector3(0, 400, 0);
         var hash = new Hashtable
